@@ -72,12 +72,11 @@ async def submit_flag(message: Message, state: FSMContext):
         await state.set_state(Send_Flag.Flag)
 
 @router.message(Send_Flag.Flag)
-async def register2(message: Message, state: FSMContext):
+async def get_flag(message: Message, state: FSMContext):
     tg_id = message.from_user.id
     flag = message.text
     flag_list = json.loads(os.environ['FLAGS'])
     if flag in flag_list:
-
         async with async_session() as session:
             user_state = await session.scalar(select(Flag).where(Flag.tg_id == tg_id, Flag.flag == flag))
             if user_state:
@@ -90,13 +89,13 @@ async def register2(message: Message, state: FSMContext):
                 await session.commit()
                 await message.answer('Отлично, флаг верный !')
                 await state.clear()
-
     elif flag not in flag_list:
         await message.answer('Неверный флаг. Попробуйте еще раз ! ❌')
+        await state.clear()
 
 
 @router.message(Command('profile'))
-async def submit_flag(message: Message):
+async def profile(message: Message):
     is_reg = await is_register(message.from_user.id)
     if is_reg == "0":
         await message.answer("Вы не зарегистрированны ! Для регистрации перейдите на /registration")
@@ -105,6 +104,23 @@ async def submit_flag(message: Message):
             tg_id = message.from_user.id
             user = await session.scalar(select(User).where(User.tg_id == tg_id))
             await message.answer(f'🔒 Профиль:\n\n😎 Имя пользователя: {user.username}\n🚩 Кол-во сданных флагов: {user.flag_count}\n')
+
+
+@router.message(Command('scoreboard'))
+async def profile(message: Message):
+    is_reg = await is_register(message.from_user.id)
+    if is_reg == "0":
+        await message.answer("Вы не зарегистрированны ! Для регистрации перейдите на /registration")
+    elif is_reg == '1':
+        async with async_session() as session:
+            stmt = select(User).order_by(User.flag_count)
+            result = await session.execute(stmt)
+            user_list = result.scalars().all()
+            scoreboard = f'🏆 Рейтинг участников:\n\n'
+            for user in user_list[::-1]:
+                scoreboard += f'{user.username} - {user.flag_count} очков\n'
+            await message.answer(f'{scoreboard}')
+
 
 
 @router.message(Command('help'))
