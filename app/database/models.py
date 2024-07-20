@@ -20,12 +20,12 @@ class User(Base):
     flag_count: Mapped[int] = mapped_column()
 
 
-# class Flag(Base):
-#     __tablename__ = 'submit'
-#
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     tg_id = mapped_column(BigInteger, nullable=False)
-#     flag: Mapped[str] = mapped_column()
+class Flag(Base):
+    __tablename__ = 'submit'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tg_id = mapped_column(BigInteger, nullable=False)
+    flag: Mapped[str] = mapped_column()
 
 
 async def async_main():
