@@ -18,7 +18,9 @@ pip install -r requirements.txt
 3. Создайте файл .env и добавьте необходимые настройки:
 
 TOKEN='BOT_API_TOKEN'
+
 URL='SQLALHIMY_URL'
+
 FLAGS='['Flag1', 'Flag2', '...']' (json)
 
 
