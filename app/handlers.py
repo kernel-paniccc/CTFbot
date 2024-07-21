@@ -1,4 +1,4 @@
-from aiogram import F, Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.state import StatesGroup, State
@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from app.database.requests import is_register
 from app.database.models import async_session
 from app.database.models import User, Flag
-from sqlalchemy import select, update, delete
+from sqlalchemy import select
 
 from dotenv import load_dotenv
 
@@ -42,7 +42,7 @@ async def start(message: Message, state: FSMContext):
             await message.answer('Введите ваш никнейм:')
             await state.set_state(Registration.name)
         else:
-            await message.answer(f'Вы уже зарегистрированны !')
+            await message.answer(f'Вы уже зарегистрированы !')
             await state.clear()
 
 @router.message(Registration.name)
@@ -116,10 +116,10 @@ async def profile(message: Message):
             stmt = select(User).order_by(User.flag_count)
             result = await session.execute(stmt)
             user_list = result.scalars().all()
-            scoreboard = f'🏆 Рейтинг участников:\n\n'
-            for user in user_list[::-1]:
-                scoreboard += f'{user.username} - {user.flag_count} очков\n'
-            await message.answer(f'{scoreboard}')
+            scoreboard = ['🏆 Рейтинг участников:\n']
+            for user in reversed(user_list):
+                scoreboard.append(f'{user.username} - {user.flag_count} очков')
+            await message.answer('\n'.join(scoreboard))
 
 
 
