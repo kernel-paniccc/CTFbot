@@ -1,7 +1,7 @@
 
 # CTFbot
 
-CTFbot — это Telegram-бот для проведения соревнований по захвату флагов (Capture The Flag) с использованием библиотек aiogram и SQLAlchemy.
+CTFbot — это Telegram-бот для проведения CTF  соревнований (Capture The Flag) с использованием библиотек aiogram и SQLAlchemy.
 
 ## Установка
 
@@ -15,7 +15,7 @@ git clone https://github.com/kernel-paniccc/CTFbot.git
 pip install -r requirements.txt
 
 
-3. Создайте файл .env и добавьте необходимые настройки:
+3. Создайте файл .env и добавьте необходимые переменные окружения:
 
 TOKEN='BOT_API_TOKEN'
 
@@ -23,14 +23,13 @@ URL='SQLALHIMY_URL'
 
 FLAGS='['Flag1', 'Flag2', '...']' (json)
 
-
 ## Использование
 
 1. Запустите бота:
 
-python run.py
+python3 run.py
 
-## Функциональность
+## Функции
 
 - Регистрация участников.
 - Просмотр профиля.
@@ -43,13 +42,5 @@ python run.py
 - app/database/models.py: Модели SQLAlchemy для работы с базой данных.
 - app/database/requests.py: Функции реквеста в БД.
 - run.py: запуск и инициализация бота.
-
-## Авторы
-
--  Ручкин Иван ([kernrl_paniccc](https://t.me/Kernel_Paniccc))
-
-## Лицензия
-
-Этот проект лицензирован по лицензии [Apache-2.0 license](LICENSE).
 
 ---
